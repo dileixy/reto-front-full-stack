@@ -1,3 +1,28 @@
+# HabitTracker
+
+HabitTracker es una aplicación de React Native para el seguimiento de hábitos diarios. Permite a los usuarios registrarse, iniciar sesión, registrar nuevos hábitos y marcar hábitos como completados. El proyecto se ha estructurado siguiendo el enfoque Atomic Design para lograr un código limpio, escalable y fácil de mantener, cumpliendo con los principios de Clean Code y SOLID.
+
+## Tecnologías Utilizadas
+- **React Native CLI** (sin Expo)
+- **TypeScript**
+- **Redux** para la gestión del estado
+- **React Navigation** para la navegación entre pantallas
+- **Jest y Testing Library** para pruebas unitarias (con cobertura 100%)
+- **ESLint** y **Prettier** para asegurar la calidad del código
+- **Supabase** para la integración con el backend
+
+
+
+## Requisitos Previos
+
+Antes de correr el proyecto, asegúrate de tener instalados los siguientes elementos:
+
+- **Node.js**: Se recomienda la versión 20.x.x (puedes gestionarla con [nvm](https://github.com/nvm-sh/nvm)).
+- **npm**: Viene con Node.js (en este proyecto se está usando npm 11.1.0 o superior).
+- **Android Studio**: Con el Android SDK y un emulador configurado (para correr la app en Android).
+- **Git**: Para clonar y gestionar el repositorio.
+
+
 This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
 # Getting Started
