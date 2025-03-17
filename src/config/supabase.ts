@@ -1,0 +1,6 @@
+import { createClient } from '@supabase/supabase-js';
+
+const SUPABASE_URL = 'https://kindindfaflytofhswqh.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImtpbmRpbmRmYWZseXRvZmhzd3FoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDA1OTkzMzUsImV4cCI6MjA1NjE3NTMzNX0.iS_vDnAOQIvNDVM11vw1Zgx45SP1EhkLhT8713gVEb0';
+
+export const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);

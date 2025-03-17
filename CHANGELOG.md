@@ -4,3 +4,6 @@
 - estructura de carpetas basada en Atomic Design
 - Configuración de navegación
 - Integracion de redux, para gestionar estados. reducer para login
+- instalacion de supabase
+- Refactor para registrarse y loguearse con supabase.
+- distribucion de carpetas para estilos.
