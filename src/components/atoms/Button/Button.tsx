@@ -10,7 +10,15 @@ interface ButtonProps {
 
 const Button = ({ title, onPress, disabled = false }: ButtonProps) => {
   return (
-    <TouchableOpacity style={styles.button} onPress={onPress}>
+    <TouchableOpacity
+      style={[styles.button, disabled && styles.buttonDisabled]}
+      onPress={() => {
+        console.log('Botón presionado- boton:', title);
+        onPress();
+      }}
+      activeOpacity={0.7}
+      disabled={disabled}
+    >
       <Text style={styles.buttonText}>{title}</Text>
     </TouchableOpacity>
   );

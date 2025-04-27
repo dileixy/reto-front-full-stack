@@ -7,3 +7,5 @@
 - instalacion de supabase
 - Refactor para registrarse y loguearse con supabase.
 - distribucion de carpetas para estilos.
+- variables de entorno para supabase
+

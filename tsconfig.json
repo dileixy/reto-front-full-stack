@@ -3,6 +3,7 @@
   "compilerOptions": {
     "jsx": "react-native", //necesario para que el codigo JSX se compile correctamente 
     "baseUrl": "./src",
+    "typeRoots": ["./node_modules/@types", "./typings"]
     /*"paths": { // crear atajos
       "@components/*": ["components/*"],
       "@screens/*": ["screens/*"]

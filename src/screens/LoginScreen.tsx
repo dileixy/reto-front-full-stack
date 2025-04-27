@@ -1,14 +1,15 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, Alert } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { login } from '../store/authSlice';
 import { RootState } from '../store/store';
 import Button from '../components/atoms/Button/Button';
 import { globalStyles } from '../styles/globalStyles';
 import { TYPOGRAPHY } from '../styles/typography';
+import { useAppDispatch } from '../store/hooks';
 
 const LoginScreen = ({ navigation }: any) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const { loading, error, isLoggedIn } = useSelector((state: RootState) => state.auth);
 
   const [email, setEmail] = useState('');
@@ -23,9 +24,11 @@ const LoginScreen = ({ navigation }: any) => {
   };
 
   // Navegar al Home si el usuario se loguea con éxito
-  if (isLoggedIn) {
-    navigation.navigate('Home');
-  }
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigation.navigate('Home');
+    }
+  }, [isLoggedIn, navigation]);
 
   return (
     <View style={globalStyles.container}>
