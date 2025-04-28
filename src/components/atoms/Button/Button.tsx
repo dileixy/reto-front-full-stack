@@ -1,23 +1,23 @@
+// src/components/atoms/Button/Button.tsx
 import React from 'react';
-import { TouchableOpacity, Text } from 'react-native';
-import { styles } from './styles'; // Importando estilos locales
+import { TouchableOpacity, Text, TouchableOpacityProps, StyleProp, ViewStyle } from 'react-native';
+import { styles } from './styles'; // Estilos que tú ya tenías
 
-interface ButtonProps {
+interface CustomButtonProps extends TouchableOpacityProps {
   title: string;
-  onPress: () => void;
-  disabled?: boolean;
+  style?: StyleProp<ViewStyle>;
 }
 
-const Button = ({ title, onPress, disabled = false }: ButtonProps) => {
+const Button = ({ title, style, disabled, ...props }: CustomButtonProps) => {
   return (
     <TouchableOpacity
-      style={[styles.button, disabled && styles.buttonDisabled]}
-      onPress={() => {
-        console.log('Botón presionado- boton:', title);
-        onPress();
-      }}
-      activeOpacity={0.7}
+      style={[
+        styles.button,
+        disabled && styles.buttonDisabled,
+        style,
+      ]}
       disabled={disabled}
+      {...props}
     >
       <Text style={styles.buttonText}>{title}</Text>
     </TouchableOpacity>
