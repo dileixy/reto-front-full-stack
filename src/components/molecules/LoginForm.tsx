@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import  React, { useEffect, useState } from 'react';
 import { View, Text, Alert } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
@@ -52,12 +52,14 @@ const LoginForm = () => {
       {error && <Text style={globalStyles.error}>{error}</Text>}
 
       <Button
+        testID= "login-button"
         title={loading ? 'Ingresando...' : 'Ingresar'}
         onPress={handleLogin}
         disabled={loading}
         style={formButtonStyles.button}
       />
       <Button
+        testID= "register-button"
         title="Registrarse"
         onPress={() => navigation.navigate('SignUp' as never)}
         style={formButtonStyles.button}
