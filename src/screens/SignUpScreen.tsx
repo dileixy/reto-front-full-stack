@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { View, TextInput, Text, Alert } from 'react-native';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { register } from '../store/authSlice';
 import { RootState } from '../store/store';
 import { globalStyles } from '../styles/globalStyles';
 import { TYPOGRAPHY } from '../styles/typography';
 import Button from '../components/atoms/Button/Button';
+import { useAppDispatch } from '../store/hooks';
 
 const SignUpScreen = ({ navigation }: any) => {
-  const dispatch = useDispatch();
+const dispatch = useAppDispatch();
   const { loading, error } = useSelector((state: RootState) => state.auth);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');

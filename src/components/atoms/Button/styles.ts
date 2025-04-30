@@ -3,7 +3,7 @@ import { COLORS } from '../../../styles/colors'; // Importando colores globales
 
 export const styles = StyleSheet.create({
   button: {
-    backgroundColor: COLORS.primary, // Color definido en un archivo global
+    backgroundColor: COLORS.primary,
     paddingVertical: 12,
     paddingHorizontal: 24,
     borderRadius: 8,
@@ -14,6 +14,9 @@ export const styles = StyleSheet.create({
     shadowOpacity: 0.2,
     shadowRadius: 3,
     elevation: 3, // Sombra en Android
+  },
+  buttonDisabled: {
+    backgroundColor: '#A5A5A5',
   },
   buttonText: {
     color: COLORS.white,
