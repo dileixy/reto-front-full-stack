@@ -1,5 +1,4 @@
-// src/components/molecules/HabitForm.tsx
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { View, Text, Alert } from 'react-native';
 import FormInput from '../atoms/FormInput/FormInput';
 import Button from '../atoms/Button/Button';
@@ -45,7 +44,7 @@ const HabitForm: React.FC<HabitFormProps> = ({ onSubmit }) => {
       />
 
       <View style={{ marginTop: SPACING.medium }}>
-        <Button title="Registrar Hábito" onPress={handleSubmit} />
+        <Button title="Registrar Hábito" testID="registrar-habito" onPress={handleSubmit} />
       </View>
     </View>
   );

@@ -8,9 +8,10 @@ interface CustomButtonProps extends TouchableOpacityProps {
   style?: StyleProp<ViewStyle>;
 }
 
-const Button = ({ title, style, disabled, ...props }: CustomButtonProps) => {
+const Button = ({ title, style, disabled, testID, ...props }: CustomButtonProps) => {
   return (
     <TouchableOpacity
+      testID={testID}
       style={[
         styles.button,
         disabled && styles.buttonDisabled,

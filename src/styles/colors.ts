@@ -10,6 +10,7 @@ export const COLORS = {
     green: 'green',
     red: 'red',
     shadow: '#999898',
-    disabled: '#5d9278'
+    disabled: '#5d9278',
+    placeHolder: '#999'
   };
   

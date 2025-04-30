@@ -1,4 +1,3 @@
-// src/components/atoms/FormInput/styles.ts
 import { StyleSheet } from 'react-native';
 import { SPACING } from '../../../styles/spacing';
 import { COLORS } from '../../../styles/colors';
