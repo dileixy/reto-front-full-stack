@@ -1,25 +1,40 @@
 import React, { useEffect } from 'react';
-import { View, Text, FlatList, Button } from 'react-native';
+import { View, Text, FlatList, BackHandler, TouchableOpacity, Alert } from 'react-native';
 import { useAppSelector, useAppDispatch } from '../store/hooks';
 import { globalStyles } from '../styles/globalStyles';
 import HabitCard from '../components/molecules/HabitCard';
 import { deleteHabit, fetchHabits, toggleHabitCompletion } from '../store/habitsSlice';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';  // Importa StackNavigationProp
-import { RootStackParamList } from '../navigation/AppNavigator';  // Asegúrate de que la ruta esté correcta
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../navigation/AppNavigator';
 import { COLORS } from '../styles/colors';
+import Button from '../components/atoms/Button/Button';
+import { logout } from '../store/authSlice';
+import { SPACING } from '../styles/spacing';
+import Icon from 'react-native-vector-icons/MaterialIcons';
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
 const HomeScreen = () => {
   const dispatch = useAppDispatch();
-  const navigation = useNavigation<HomeScreenNavigationProp>(); // Para navegación
+  const navigation = useNavigation<HomeScreenNavigationProp>();
   const { habitsList, error } = useAppSelector((state) => state.habits);
+  const { isLoggedIn } = useAppSelector((state) => state.auth); 
 
   // Cargar hábitos al montar el componente
   useEffect(() => {
     dispatch(fetchHabits());
   }, [dispatch]);
+
+  // resetea las rutas y solo permite login
+  useEffect(() => {
+    if (!isLoggedIn) {
+      navigation.reset({
+        index: 0,
+        routes: [{ name: 'Login'}],
+      });
+    }
+  }, [isLoggedIn, navigation]);
 
   // Función para manejar la finalización de un hábito
   const handleCompleteHabit = (id: string) => {
@@ -41,6 +56,20 @@ const HomeScreen = () => {
     dispatch(deleteHabit(id)); // Acción para eliminar el hábito
   };
 
+  const handleLogout = () => {
+    dispatch(logout());
+  };
+
+  const confirmLogout = () => {
+    Alert.alert(
+      'Cerrar sesión',
+      '¿Seguro que quieres cerrar sesión?',
+      [
+        { text: 'Cancelar', style: 'cancel' },
+        { text: 'Cerrar sesión', onPress: handleLogout, style: 'destructive' }
+      ]
+    );
+  };
 
   if (error) {
     return <Text style={{ color: COLORS.red }}>{error}</Text>;
@@ -48,6 +77,10 @@ const HomeScreen = () => {
 
   return (
     <View style={globalStyles.container}>
+
+      <View style={{ alignItems: 'flex-end', marginBottom: 10, marginTop: 50 }}>
+        <Button title="Cerrar sesión" onPress={handleLogout} />
+      </View>
       <Text style={globalStyles.title}>Mis Hábitos</Text>
       <Button title="Crear Hábito" onPress={handleGoToCreateHabit} />
       <FlatList
@@ -61,6 +94,7 @@ const HomeScreen = () => {
             onDelete={handleDeleteHabit}
           />
         )}
+        contentContainerStyle={{ paddingHorizontal: SPACING.small }}
       />
     </View>
   );

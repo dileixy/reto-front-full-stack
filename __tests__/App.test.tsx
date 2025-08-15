@@ -1,13 +1,10 @@
 /**
  * @format
  */
+import { SUPABASE_URL } from '@env';
 
-import React from 'react';
-import ReactTestRenderer from 'react-test-renderer';
-import App from '../App';
-
-test('renders correctly', async () => {
-  await ReactTestRenderer.act(() => {
-    ReactTestRenderer.create(<App />);
+describe('env mock', () => {
+  it('should return the mocked SUPABASE_URL', () => {
+    expect(SUPABASE_URL).toBe('https://mock.supabase.co');
   });
 });

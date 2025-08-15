@@ -1,59 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, TextInput, Alert } from 'react-native';
-import { useSelector } from 'react-redux';
-import { login } from '../store/authSlice';
-import { RootState } from '../store/store';
-import Button from '../components/atoms/Button/Button';
+import React from 'react';
+import { View, SafeAreaView, KeyboardAvoidingView, Platform, Image, Text } from 'react-native';
 import { globalStyles } from '../styles/globalStyles';
-import { TYPOGRAPHY } from '../styles/typography';
-import { useAppDispatch } from '../store/hooks';
+import LoginForm from '../components/molecules/LoginForm';
+import { images } from '../assets/images/images';
+import { COLORS } from '../styles/colors';
 
-const LoginScreen = ({ navigation }: any) => {
-  const dispatch = useAppDispatch();
-  const { loading, error, isLoggedIn } = useSelector((state: RootState) => state.auth);
-
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-
-  const handleLogin = () => {
-    if (!email || !password) {
-      Alert.alert('Error', 'Por favor, ingresa tu email y contraseña.');
-      return;
-    }
-    dispatch(login({ email, password }) as any);
-  };
-
-  // Navegar al Home si el usuario se loguea con éxito
-  useEffect(() => {
-    if (isLoggedIn) {
-      navigation.navigate('Home');
-    }
-  }, [isLoggedIn, navigation]);
-
+const LoginScreen = () => {
   return (
-    <View style={globalStyles.container}>
-      <Text style={TYPOGRAPHY.title}>Login</Text>
+    <SafeAreaView style={{ flex: 1 }}>
+      <KeyboardAvoidingView
+        style={{ flex: 1 }}
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      >
+        <View style={[globalStyles.container, { justifyContent: 'center', backgroundColor: COLORS.primary }]}>
+          <Image source={images.logo} style={globalStyles.logo} />
 
-      <TextInput
-        style={globalStyles.input}
-        placeholder="Email"
-        value={email}
-        onChangeText={setEmail}
-        keyboardType="email-address"
-      />
-      <TextInput
-        style={globalStyles.input}
-        placeholder="Contraseña"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-      />
-
-      {error && <Text style={globalStyles.error}>{error}</Text>}
-
-      <Button title={loading ? 'Ingresando...' : 'Ingresar'} onPress={handleLogin} disabled={loading} />
-      <Button title="Registrarse" onPress={() => navigation.navigate('SignUp')} />
-    </View>
+          <LoginForm />
+        </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 

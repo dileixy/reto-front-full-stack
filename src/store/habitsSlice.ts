@@ -112,6 +112,9 @@ export const deleteHabit = createAsyncThunk<string, string, { rejectValue: strin
   'habits/delete',
   async (habitId: string, thunkAPI) => {
     const userId = (thunkAPI.getState() as RootState).auth.user?.id;
+
+    if (!userId) return thunkAPI.rejectWithValue('Usuario no autenticado');
+
     const { data: habits, error: fetchError } = await supabase
       .from('habits')
       .select('*')
