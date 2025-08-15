@@ -57,9 +57,16 @@ export const useLoginScreen = () => {
   };
 
   // Handlers
-  const handleLogin = () => {
+    const handleLogin = async () => {
     if (!validateForm()) return;
-    dispatch(login({ email, password }) as any);
+
+    try {
+      const credentials = { email, password };
+      await dispatch(login(credentials)).unwrap();
+      navigation.replace('Home');
+    } catch (error) {
+      // Error is handled by useEffect through Redux state
+    }
   };
 
   const handleGoToSignUp = () => {

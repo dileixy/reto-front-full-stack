@@ -1,9 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { supabase } from '../config/supabase';
+import { diContainer } from '../config/DIContainer';
+import { User, AuthCredentials } from '../domain/entities/User';
 
 interface AuthState {
   isLoggedIn: boolean;
-  user: { id: string; name: string; email: string } | null;
+  user: User | null;
   loading: boolean;
   error: string | null;
 }
@@ -15,44 +16,41 @@ const initialState: AuthState = {
   error: null,
 };
 
+// Thunks now use business logic from use cases
 export const register = createAsyncThunk(
   'auth/register',
-  async ({ email, password }: { email: string; password: string }, thunkAPI) => {
-    const { data, error } = await supabase.auth.signUp({
-      email,
-      password,
-    });
-
-    if (error) {
+  async (credentials: AuthCredentials, thunkAPI) => {
+    try {
+      const registerUseCase = diContainer.getRegisterUseCase();
+      const result = await registerUseCase.execute(credentials);
+      return result.user;
+    } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message);
     }
-
-    // Asegurar que se devuelven los datos correctos
-    return { id: data.user?.id, name: data.user?.user_metadata?.name ?? '', email: data.user?.email };
   }
 );
 
-// Acción asíncrona para iniciar sesión con Supabase
 export const login = createAsyncThunk(
   'auth/login',
-  async ({ email, password }: { email: string; password: string }, thunkAPI) => {
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-
-    if (error) {
+  async (credentials: AuthCredentials, thunkAPI) => {
+    try {
+      const loginUseCase = diContainer.getLoginUseCase();
+      const result = await loginUseCase.execute(credentials);
+      return result.user;
+    } catch (error: any) {
       return thunkAPI.rejectWithValue(error.message);
     }
-
-    return { id: data.user?.id, name: data.user?.user_metadata?.name ?? '', email: data.user?.email };
   }
 );
 
-// Acción asíncrona para cerrar sesión
 export const logout = createAsyncThunk('auth/logout', async (_, thunkAPI) => {
-  const { error } = await supabase.auth.signOut();
-  if (error) {
+  try {
+    const logoutUseCase = diContainer.getLogoutUseCase();
+    await logoutUseCase.execute();
+    return null;
+  } catch (error: any) {
     return thunkAPI.rejectWithValue(error.message);
   }
-  return null;
 });
 
 const authSlice = createSlice({
@@ -67,12 +65,8 @@ const authSlice = createSlice({
       })
       .addCase(register.fulfilled, (state, action) => {
         state.loading = false;
-        state.isLoggedIn = false;
-        state.user = {
-          id: action.payload.id ?? '',
-          name: action.payload.name,
-          email: action.payload.email ?? '', // <-- Si es undefined, usa un string vacío
-        };
+        state.isLoggedIn = false; // User needs to confirm email for registration
+        state.user = action.payload;
       })
       .addCase(register.rejected, (state, action) => {
         state.loading = false;
@@ -83,17 +77,9 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(login.fulfilled, (state, action) => {
-        if (!action.payload) {
-          state.error = 'No se recibieron datos del usuario.';
-          return;
-        }
         state.loading = false;
         state.isLoggedIn = true;
-        state.user = {
-          id: action.payload.id,
-          name: action.payload.name,
-          email: action.payload.email ?? '', // <-- Si es undefined, usa un string vacío
-        };
+        state.user = action.payload;
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;

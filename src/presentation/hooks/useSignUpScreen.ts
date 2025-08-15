@@ -69,21 +69,20 @@ export const useSignUpScreen = () => {
   };
 
   // Handlers
-  const handleRegister = async () => {
+    const handleSubmit = async () => {
     if (!validateForm()) return;
 
     try {
-      const resultAction = await dispatch(register({ email: email.trim(), password }) as any);
-
-      if (register.fulfilled.match(resultAction)) {
-        showAlert(
-          'Registro exitoso',
-          'Por favor, revisa tu correo electrónico para confirmar tu cuenta antes de iniciar sesión.',
-          () => navigation.navigate('Login')
-        );
-      }
+      const credentials = { email, password };
+      await dispatch(register(credentials)).unwrap();
+      
+      showAlert(
+        'Registro exitoso',
+        'Se ha enviado un correo de confirmación. Por favor, revisa tu bandeja de entrada.',
+        () => navigation.navigate('Login')
+      );
     } catch (error) {
-      showError('No se pudo completar el registro. Inténtalo de nuevo.');
+      // Error is handled by useEffect through Redux state
     }
   };
 
@@ -111,7 +110,7 @@ export const useSignUpScreen = () => {
     loading,
     
     // Handlers
-    handleRegister,
+    handleRegister: handleSubmit,
     handleGoToLogin,
     handleEmailChange,
     handlePasswordChange,

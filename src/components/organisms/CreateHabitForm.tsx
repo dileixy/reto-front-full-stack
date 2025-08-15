@@ -2,19 +2,21 @@ import React from 'react';
 import { View, Text, ScrollView } from 'react-native';
 import FormInput from '../atoms/FormInput/FormInput';
 import Button from '../atoms/Button/Button';
+import FrequencySelector from '../molecules/FrequencySelector/FrequencySelector';
 import { formButtonStyles } from '../../styles/formButtonStyles';
 import { SPACING } from '../../styles/spacing';
 import { COLORS } from '../../styles/colors';
 import { StyleSheet } from 'react-native';
+import { HabitFrequency } from '../../types/frequency';
 
 interface CreateHabitFormProps {
   name: string;
   description: string;
-  frequency: string;
+  frequency: HabitFrequency;
   isSubmitting: boolean;
   onNameChange: (text: string) => void;
   onDescriptionChange: (text: string) => void;
-  onFrequencyChange: (text: string) => void;
+  onFrequencyChange: (frequency: HabitFrequency) => void;
   onSubmit: () => void;
 }
 
@@ -50,25 +52,21 @@ const CreateHabitForm: React.FC<CreateHabitFormProps> = ({
             value={description}
             onChangeText={onDescriptionChange}
             multiline
-            numberOfLines={4}
-            maxLength={200}
+            numberOfLines={3}
+            maxLength={80}
             style={styles.textArea}
           />
-          {description.length > 0 && description.length < 10 && (
-            <Text style={styles.helper}>Mínimo 10 caracteres</Text>
+          {description.length > 0 && description.length < 5 && (
+            <Text style={styles.helper}>Mínimo 5 caracteres</Text>
           )}
+          <Text style={styles.charCounter}>{description.length}/80</Text>
         </View>
 
         <View style={styles.fieldContainer}>
-          <FormInput
-            placeholder="Frecuencia (Ej: Diario, Semanal)"
-            value={frequency}
-            onChangeText={onFrequencyChange}
-            maxLength={30}
+          <FrequencySelector
+            selectedFrequency={frequency}
+            onFrequencyChange={onFrequencyChange}
           />
-          {frequency.length > 0 && frequency.length === 0 && (
-            <Text style={styles.helper}>¿Con qué frecuencia quieres realizarlo?</Text>
-          )}
         </View>
 
         <View style={styles.buttonContainer}>
@@ -106,8 +104,15 @@ const styles = StyleSheet.create({
     marginLeft: SPACING.small,
     fontStyle: 'italic',
   },
+  charCounter: {
+    fontSize: 12,
+    color: COLORS.gray,
+    textAlign: 'right',
+    marginTop: 4,
+    marginRight: SPACING.small,
+  },
   textArea: {
-    height: 100,
+    height: 80,
     textAlignVertical: 'top',
     backgroundColor: COLORS.white, // Forzar fondo blanco
     borderWidth: 1,

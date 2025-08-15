@@ -43,6 +43,13 @@ export const habitCardStyles = StyleSheet.create({
     color: COLORS.text,
     lineHeight: TYPOGRAPHY.sizes.md * 1.4,
     marginTop: SPACING.xsmall,
+    flex: 1,
+  },
+  contentRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-start',
+    marginTop: SPACING.xsmall,
   },
   iconRow: {
     flexDirection: 'row',

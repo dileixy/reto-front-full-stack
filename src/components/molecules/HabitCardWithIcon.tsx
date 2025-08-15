@@ -1,22 +1,22 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Habit } from '../../types/index';
-import { COLORS } from '../../styles/colors';
+import { habitCardStyles, COLORS } from '../../styles';
 import { CheckCircle } from 'lucide-react-native';
 import { FREQUENCY_ICONS, FREQUENCY_COLORS } from '../../types/frequency';
 import { SPACING } from '../../styles/spacing';
 import { TYPOGRAPHY } from '../../styles/typography';
 
-interface HabitCardProps {
+interface HabitCardWithIconProps {
   habit: Habit;
   onComplete: (id: string) => void;
   onEdit: (id: string) => void;
   onDelete: (id: string) => void;
 }
 
-const HabitCard: React.FC<HabitCardProps> = ({ habit, onComplete, onEdit, onDelete }) => {
+const HabitCardWithIcon: React.FC<HabitCardWithIconProps> = ({ habit, onComplete, onEdit, onDelete }) => {
   return (
-    <View style={styles.container}>
+    <View style={habitCardStyles.container}>
       <View style={styles.card}>
         
         {/* Layout horizontal: Ícono de frecuencia | Contenido | Ícono completado */}
@@ -47,15 +47,6 @@ const HabitCard: React.FC<HabitCardProps> = ({ habit, onComplete, onEdit, onDele
 };
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: COLORS.white,
-    marginVertical: SPACING.xsmall,
-    marginHorizontal: SPACING.xsmall,
-    borderRadius: 16,
-    borderWidth: 1,
-    borderColor: COLORS.background,
-    overflow: 'visible',
-  },
   card: {
     backgroundColor: COLORS.white,
     padding: SPACING.medium,
@@ -103,4 +94,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HabitCard;
+export default HabitCardWithIcon;

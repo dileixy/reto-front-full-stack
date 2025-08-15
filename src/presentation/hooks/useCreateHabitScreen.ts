@@ -6,6 +6,7 @@ import { useModal } from '../../context/ModalContext';
 import { getCustomErrorMessage } from '../../utils/errorMessages';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
+import { HabitFrequency } from '../../types/frequency';
 
 type CreateHabitScreenNavigationProp = StackNavigationProp<RootStackParamList, 'CreateHabit'>;
 
@@ -16,7 +17,7 @@ export const useCreateHabitScreen = () => {
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
-  const [frequency, setFrequency] = useState('Diario');
+  const [frequency, setFrequency] = useState<HabitFrequency>(HabitFrequency.DAILY);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   // Validation
@@ -36,12 +37,17 @@ export const useCreateHabitScreen = () => {
       return false;
     }
 
-    if (description.trim().length < 10) {
-      showError('La descripción debe tener al menos 10 caracteres.');
+    if (description.trim().length < 5) {
+      showError('La descripción debe tener al menos 5 caracteres.');
       return false;
     }
 
-    if (!frequency.trim()) {
+    if (description.trim().length > 80) {
+      showError('La descripción no puede exceder 80 caracteres.');
+      return false;
+    }
+
+    if (!frequency) {
       showError('Por favor selecciona una frecuencia.');
       return false;
     }
@@ -55,13 +61,13 @@ export const useCreateHabitScreen = () => {
 
     setIsSubmitting(true);
     try {
-      const habitData = {
+      const habitRequest = {
         name: name.trim(),
         description: description.trim(),
-        frequency: frequency.trim(),
+        frequency,
       };
 
-      await dispatch(registerHabit(habitData));
+      await dispatch(registerHabit(habitRequest)).unwrap();
       
       showSuccess(
         'Hábito creado correctamente',
@@ -97,14 +103,14 @@ export const useCreateHabitScreen = () => {
     setDescription(text);
   };
 
-  const handleFrequencyChange = (text: string) => {
-    setFrequency(text);
+  const handleFrequencyChange = (frequency: HabitFrequency) => {
+    setFrequency(frequency);
   };
 
   const resetForm = () => {
     setName('');
     setDescription('');
-    setFrequency('Diario');
+    setFrequency(HabitFrequency.DAILY);
   };
 
   return {
