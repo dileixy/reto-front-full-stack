@@ -18,6 +18,8 @@ export { habitCardStyles } from './components/molecules/habitCard';
 
 // Component styles - Screens
 export { homeScreenStyles } from './components/screens/homeScreen';
+export { createHabitScreenStyles } from './components/screens/createHabitScreen';
+export { signUpScreenStyles } from './components/screens/signUpScreen';
 
 // Legacy styles (to be migrated)
 export { formStyles } from './formStyles';

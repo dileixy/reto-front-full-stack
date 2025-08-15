@@ -1,8 +1,10 @@
 import { StyleSheet } from 'react-native';
+import { SPACING } from './spacing';
 
 export const formButtonStyles = StyleSheet.create({
   button: {
-    marginVertical: 8,
-    width: '90%',
+    width: '100%',
+    marginVertical: SPACING.small,
+    alignSelf: 'center',
   },
 });

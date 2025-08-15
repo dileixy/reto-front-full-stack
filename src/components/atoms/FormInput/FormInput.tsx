@@ -6,7 +6,7 @@ import { COLORS } from '../../../styles/colors';
 const FormInput = (props: TextInputProps) => {
   return (
     <TextInput
-      style={styles.input}
+      style={[styles.input, props.style]}
       placeholderTextColor={COLORS.placeHolder}
       {...props}
     />

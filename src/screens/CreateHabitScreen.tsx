@@ -1,23 +1,36 @@
 import React from 'react';
 import { View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
-import { useAppDispatch } from '../store/hooks';
-import { registerHabit } from '../store/habitsSlice';
-import { globalStyles } from '../styles/globalStyles';
-import HabitForm from '../components/molecules/HabitForm';
+import { useCreateHabitScreen } from '../presentation/hooks/useCreateHabitScreen';
+import { CreateHabitHeader, CreateHabitForm } from '../components/organisms';
+import { createHabitScreenStyles } from '../styles';
 
 const CreateHabitScreen = () => {
-  const dispatch = useAppDispatch();
-  const navigation = useNavigation();
-
-  const handleRegisterHabit = (habit: { name: string; description: string; frequency: string }) => {
-    dispatch(registerHabit(habit));
-    navigation.goBack();
-  };
+  const {
+    name,
+    description,
+    frequency,
+    isSubmitting,
+    handleCreateHabit,
+    handleCancel,
+    handleNameChange,
+    handleDescriptionChange,
+    handleFrequencyChange,
+  } = useCreateHabitScreen();
 
   return (
-    <View style={globalStyles.container}>
-      <HabitForm onSubmit={handleRegisterHabit} />
+    <View style={createHabitScreenStyles.container}>
+      <CreateHabitHeader onCancel={handleCancel} />
+      
+      <CreateHabitForm
+        name={name}
+        description={description}
+        frequency={frequency}
+        isSubmitting={isSubmitting}
+        onNameChange={handleNameChange}
+        onDescriptionChange={handleDescriptionChange}
+        onFrequencyChange={handleFrequencyChange}
+        onSubmit={handleCreateHabit}
+      />
     </View>
   );
 };
