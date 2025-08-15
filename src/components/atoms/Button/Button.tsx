@@ -1,15 +1,20 @@
 // src/components/atoms/Button/Button.tsx
 import React from 'react';
-import { TouchableOpacity, Text, TouchableOpacityProps, StyleProp, ViewStyle } from 'react-native';
+import { TouchableOpacity, Text, TouchableOpacityProps, StyleProp, ViewStyle, TextStyle } from 'react-native';
 import { PlusCircleIcon } from 'react-native-heroicons/solid';
 import { buttonStyles } from '../../../styles'; // Estilos centralizados
 
 interface CustomButtonProps extends TouchableOpacityProps {
   title: string;
   style?: StyleProp<ViewStyle>;
+  backgroundColor?: string;
+  textColor?: string;
 }
 
-const Button = ({ title, style, disabled, testID, ...props }: CustomButtonProps) => {
+const Button = ({ title, style, disabled, testID, backgroundColor, textColor, ...props }: CustomButtonProps) => {
+  const buttonStyle = backgroundColor ? { backgroundColor } : {};
+  const textStyle = textColor ? { color: textColor } : {};
+
   return (
     <TouchableOpacity
       testID={testID}
@@ -17,11 +22,12 @@ const Button = ({ title, style, disabled, testID, ...props }: CustomButtonProps)
         buttonStyles.button,
         disabled && buttonStyles.buttonDisabled,
         style,
+        buttonStyle,
       ]}
       disabled={disabled}
       {...props}
     >
-      <Text style={buttonStyles.buttonText}>{title}</Text>
+      <Text style={[buttonStyles.buttonText, textStyle]}>{title}</Text>
     </TouchableOpacity>
   );
 };

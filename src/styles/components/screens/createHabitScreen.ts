@@ -11,13 +11,13 @@ export const createHabitScreenStyles = StyleSheet.create({
     backgroundColor: COLORS.background,
   },
   headerContainer: {
-    paddingTop: 60,
+    paddingTop: 50,
     paddingBottom: SPACING.medium,
     paddingHorizontal: SPACING.medium,
     backgroundColor: COLORS.background,
   },
   backButtonContainer: {
-    marginBottom: SPACING.medium,
+    marginBottom: SPACING.large,
   },
   titleContainer: {
     alignItems: 'flex-start',

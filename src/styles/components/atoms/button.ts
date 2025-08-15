@@ -13,7 +13,6 @@ export const buttonStyles = StyleSheet.create({
     borderRadius: RADIUS.md,
     alignItems: 'center',
     justifyContent: 'center',
-    ...SHADOWS.sm,
   },
   buttonDisabled: {
     backgroundColor: COLORS.gray,

@@ -63,6 +63,8 @@ const LoginForm = () => {
         title="Registrarse"
         onPress={() => navigation.navigate('SignUp' as never)}
         style={formButtonStyles.button}
+        backgroundColor="transparent"
+        textColor="#FFFFFF"
       />
     </View>
   );

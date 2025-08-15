@@ -55,13 +55,14 @@ const LoginContainer: React.FC<LoginContainerProps> = ({
         style={formButtonStyles.button}
       />
       
-      <View style={styles.linkContainer}>
-        <TouchableOpacity onPress={onGoToSignUp}>
-          <Text style={styles.linkText}>
-            Registrarse
-          </Text>
-        </TouchableOpacity>
-      </View>
+      <Button
+        testID="register-button"
+        title="Registrarse"
+        onPress={onGoToSignUp}
+        style={formButtonStyles.button}
+        backgroundColor="transparent"
+        textColor="#FFFFFF"
+      />
     </View>
   );
 };

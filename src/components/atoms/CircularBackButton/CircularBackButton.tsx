@@ -1,44 +1,49 @@
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { StyleSheet } from 'react-native';
+import { ArrowLeft } from 'lucide-react-native';
 import { COLORS } from '../../../styles/colors';
-import { SPACING } from '../../../styles/spacing';
-import { SHADOWS } from '../../../styles/shadows';
 
 interface CircularBackButtonProps {
   onPress: () => void;
   color?: string;
+  iconColor?: string;
+  size?: number;
 }
 
 const CircularBackButton: React.FC<CircularBackButtonProps> = ({ 
   onPress, 
-  color = COLORS.primary 
+  color = COLORS.primary,
+  iconColor = COLORS.white,
+  size = 40
 }) => {
   return (
-    <TouchableOpacity style={[styles.container, { backgroundColor: color }]} onPress={onPress}>
-      <View style={styles.arrow} />
+    <TouchableOpacity 
+      style={[
+        styles.container, 
+        { 
+          backgroundColor: color,
+          width: size,
+          height: size,
+          borderRadius: size / 2
+        }
+      ]} 
+      onPress={onPress}
+      activeOpacity={0.7}
+    >
+      <ArrowLeft 
+        size={size * 0.6} 
+        color={iconColor} 
+        strokeWidth={2}
+      />
     </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  arrow: {
-    width: 0,
-    height: 0,
-    borderTopWidth: 6,
-    borderBottomWidth: 6,
-    borderRightWidth: 10,
-    borderTopColor: 'transparent',
-    borderBottomColor: 'transparent',
-    borderRightColor: COLORS.white,
-    marginLeft: -2, // Para centrar visualmente la flecha
   },
 });
 

@@ -73,6 +73,8 @@ const SignUpForm = () => {
         onPress={handleRegister}
         disabled={loading}
         style={formButtonStyles.button}
+        backgroundColor="transparent"
+        textColor="#FFFFFF"
       />
       <Button
         title="Ya tengo cuenta"
