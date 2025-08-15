@@ -77,15 +77,10 @@ const HomeScreen = () => {
 
   return (
     <View style={globalStyles.container}>
-      <View style={{ flexDirection: 'row', justifyContent: 'flex-end', padding: SPACING.small }}>
-        <TouchableOpacity onPress={confirmLogout}>
-          <Icon name="person" size={30} color={COLORS.primary} />
-        </TouchableOpacity>
-      </View>
-      <View style={{ alignItems: 'flex-end', marginBottom: 10 }}>
+
+      <View style={{ alignItems: 'flex-end', marginBottom: 10, marginTop: 50 }}>
         <Button title="Cerrar sesión" onPress={handleLogout} />
       </View>
-
       <Text style={globalStyles.title}>Mis Hábitos</Text>
       <Button title="Crear Hábito" onPress={handleGoToCreateHabit} />
       <FlatList
