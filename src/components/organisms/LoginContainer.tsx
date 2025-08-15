@@ -13,7 +13,6 @@ interface LoginContainerProps {
   email: string;
   password: string;
   loading: boolean;
-  error: string | null;
   onEmailChange: (text: string) => void;
   onPasswordChange: (text: string) => void;
   onLogin: () => void;
@@ -24,7 +23,6 @@ const LoginContainer: React.FC<LoginContainerProps> = ({
   email,
   password,
   loading,
-  error,
   onEmailChange,
   onPasswordChange,
   onLogin,
@@ -48,8 +46,6 @@ const LoginContainer: React.FC<LoginContainerProps> = ({
         secureTextEntry
         autoComplete="password"
       />
-
-      {error && <Text style={globalStyles.error}>{error}</Text>}
 
       <Button
         testID="login-button"

@@ -10,7 +10,6 @@ const SignUpScreen = () => {
     password,
     confirmPassword,
     loading,
-    error,
     handleRegister,
     handleGoToLogin,
     handleEmailChange,
@@ -27,7 +26,6 @@ const SignUpScreen = () => {
         password={password}
         confirmPassword={confirmPassword}
         loading={loading}
-        error={error}
         onEmailChange={handleEmailChange}
         onPasswordChange={handlePasswordChange}
         onConfirmPasswordChange={handleConfirmPasswordChange}

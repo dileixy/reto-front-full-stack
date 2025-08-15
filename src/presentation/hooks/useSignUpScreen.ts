@@ -1,10 +1,11 @@
-import { useState } from 'react';
-import { Alert } from 'react-native';
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { register } from '../../store/authSlice';
 import { RootState } from '../../store/store';
 import { useAppDispatch } from '../../store/hooks';
+import { useModal } from '../../context/ModalContext';
+import { getCustomErrorMessage } from '../../utils/errorMessages';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
 
@@ -14,10 +15,19 @@ export const useSignUpScreen = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<SignUpScreenNavigationProp>();
   const { loading, error } = useSelector((state: RootState) => state.auth);
+  const { showError, showAlert } = useModal();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+
+  // Show modal for authentication errors
+  useEffect(() => {
+    if (error) {
+      const customMessage = getCustomErrorMessage(error);
+      showError(customMessage);
+    }
+  }, [error]); // Solo depender del error
 
   // Validation
   const isValidEmail = (email: string): boolean => {
@@ -26,32 +36,32 @@ export const useSignUpScreen = () => {
 
   const validateForm = (): boolean => {
     if (!email.trim()) {
-      Alert.alert('Error', 'Por favor, ingresa tu email.');
+      showError('Por favor, ingresa tu email.');
       return false;
     }
 
     if (!isValidEmail(email)) {
-      Alert.alert('Error', 'Por favor, ingresa un email válido.');
+      showError('Por favor, ingresa un email válido.');
       return false;
     }
 
     if (!password) {
-      Alert.alert('Error', 'Por favor, ingresa una contraseña.');
+      showError('Por favor, ingresa una contraseña.');
       return false;
     }
 
     if (password.length < 6) {
-      Alert.alert('Error', 'La contraseña debe tener al menos 6 caracteres.');
+      showError('La contraseña debe tener al menos 6 caracteres.');
       return false;
     }
 
     if (!confirmPassword) {
-      Alert.alert('Error', 'Por favor, confirma tu contraseña.');
+      showError('Por favor, confirma tu contraseña.');
       return false;
     }
 
     if (password !== confirmPassword) {
-      Alert.alert('Error', 'Las contraseñas no coinciden.');
+      showError('Las contraseñas no coinciden.');
       return false;
     }
 
@@ -66,14 +76,14 @@ export const useSignUpScreen = () => {
       const resultAction = await dispatch(register({ email: email.trim(), password }) as any);
 
       if (register.fulfilled.match(resultAction)) {
-        Alert.alert(
+        showAlert(
           'Registro exitoso',
           'Por favor, revisa tu correo electrónico para confirmar tu cuenta antes de iniciar sesión.',
-          [{ text: 'OK', onPress: () => navigation.navigate('Login') }]
+          () => navigation.navigate('Login')
         );
       }
     } catch (error) {
-      Alert.alert('Error', 'No se pudo completar el registro. Inténtalo de nuevo.');
+      showError('No se pudo completar el registro. Inténtalo de nuevo.');
     }
   };
 
@@ -99,7 +109,6 @@ export const useSignUpScreen = () => {
     password,
     confirmPassword,
     loading,
-    error,
     
     // Handlers
     handleRegister,

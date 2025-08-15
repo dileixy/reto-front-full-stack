@@ -13,7 +13,6 @@ interface SignUpFormProps {
   password: string;
   confirmPassword: string;
   loading: boolean;
-  error: string | null;
   onEmailChange: (text: string) => void;
   onPasswordChange: (text: string) => void;
   onConfirmPasswordChange: (text: string) => void;
@@ -26,7 +25,6 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
   password,
   confirmPassword,
   loading,
-  error,
   onEmailChange,
   onPasswordChange,
   onConfirmPasswordChange,
@@ -76,8 +74,6 @@ const SignUpForm: React.FC<SignUpFormProps> = ({
             <Text style={styles.helper}>Las contraseñas no coinciden</Text>
           )}
         </View>
-
-        {error && <Text style={globalStyles.error}>{error}</Text>}
 
         <View style={styles.buttonContainer}>
           <Button

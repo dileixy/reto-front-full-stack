@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Alert } from 'react-native';
+import { View, Text } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { register } from '../../store/authSlice';
@@ -8,6 +8,7 @@ import { globalStyles } from '../../styles/globalStyles';
 import Button from '../atoms/Button/Button';
 import FormInput from '../atoms/FormInput/FormInput';
 import { useAppDispatch } from '../../store/hooks';
+import { useModal } from '../../context/ModalContext';
 import { formStyles } from '../../styles/formStyles';
 import { formButtonStyles } from '../../styles/formButtonStyles';
 
@@ -15,6 +16,7 @@ const SignUpForm = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation();
   const { loading, error } = useSelector((state: RootState) => state.auth);
+  const { showError, showSuccess } = useModal();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -23,27 +25,26 @@ const SignUpForm = () => {
 
   const handleRegister = async () => {
     if (!email || !password) {
-      Alert.alert('Error', 'Por favor, ingresa tu email y contraseña.');
+      showError('Por favor, ingresa tu email y contraseña.');
       return;
     }
 
     if (!isValidEmail(email)) {
-      Alert.alert('Error', 'Por favor, ingresa un email válido.');
+      showError('Por favor, ingresa un email válido.');
       return;
     }
 
     if (password.length < 6) {
-      Alert.alert('Error', 'La contraseña debe tener al menos 6 caracteres.');
+      showError('La contraseña debe tener al menos 6 caracteres.');
       return;
     }
 
     const resultAction = await dispatch(register({ email, password }) as any);
 
     if (register.fulfilled.match(resultAction)) {
-      Alert.alert(
-        'Registro exitoso',
+      showSuccess(
         'Por favor, revisa tu correo electrónico para confirmar tu cuenta antes de iniciar sesión.',
-        [{ text: 'OK', onPress: () => navigation.navigate('Login' as never) }]
+        () => navigation.navigate('Login' as never)
       );
     }
   };

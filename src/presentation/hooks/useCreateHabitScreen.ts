@@ -1,8 +1,9 @@
 import { useState } from 'react';
-import { Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useAppDispatch } from '../../store/hooks';
 import { registerHabit } from '../../store/habitsSlice';
+import { useModal } from '../../context/ModalContext';
+import { getCustomErrorMessage } from '../../utils/errorMessages';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
 
@@ -11,6 +12,7 @@ type CreateHabitScreenNavigationProp = StackNavigationProp<RootStackParamList, '
 export const useCreateHabitScreen = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<CreateHabitScreenNavigationProp>();
+  const { showError, showSuccess, showConfirm } = useModal();
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
@@ -20,27 +22,27 @@ export const useCreateHabitScreen = () => {
   // Validation
   const validateForm = (): boolean => {
     if (!name.trim()) {
-      Alert.alert('Error', 'Por favor ingresa el nombre del hábito.');
+      showError('Por favor ingresa el nombre del hábito.');
       return false;
     }
 
     if (name.trim().length < 3) {
-      Alert.alert('Error', 'El nombre del hábito debe tener al menos 3 caracteres.');
+      showError('El nombre del hábito debe tener al menos 3 caracteres.');
       return false;
     }
 
     if (!description.trim()) {
-      Alert.alert('Error', 'Por favor ingresa una descripción.');
+      showError('Por favor ingresa una descripción.');
       return false;
     }
 
     if (description.trim().length < 10) {
-      Alert.alert('Error', 'La descripción debe tener al menos 10 caracteres.');
+      showError('La descripción debe tener al menos 10 caracteres.');
       return false;
     }
 
     if (!frequency.trim()) {
-      Alert.alert('Error', 'Por favor selecciona una frecuencia.');
+      showError('Por favor selecciona una frecuencia.');
       return false;
     }
 
@@ -61,13 +63,14 @@ export const useCreateHabitScreen = () => {
 
       await dispatch(registerHabit(habitData));
       
-      Alert.alert(
-        'Éxito',
+      showSuccess(
         'Hábito creado correctamente',
-        [{ text: 'OK', onPress: () => navigation.goBack() }]
+        () => navigation.goBack()
       );
     } catch (error) {
-      Alert.alert('Error', 'No se pudo crear el hábito. Inténtalo de nuevo.');
+      const errorMessage = error instanceof Error ? error.message : 'Error desconocido';
+      const customMessage = getCustomErrorMessage(errorMessage);
+      showError(customMessage);
     } finally {
       setIsSubmitting(false);
     }
@@ -75,13 +78,11 @@ export const useCreateHabitScreen = () => {
 
   const handleCancel = () => {
     if (name.trim() || description.trim()) {
-      Alert.alert(
+      showConfirm(
         'Confirmar',
         '¿Seguro que quieres cancelar? Se perderán los cambios.',
-        [
-          { text: 'No', style: 'cancel' },
-          { text: 'Sí', onPress: () => navigation.goBack() }
-        ]
+        () => navigation.goBack(),
+        () => {} // No hacer nada si cancela
       );
     } else {
       navigation.goBack();

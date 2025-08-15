@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
-import { Alert } from 'react-native';
 import { useAppSelector, useAppDispatch } from '../../store/hooks';
 import { deleteHabit, fetchHabits, toggleHabitCompletion } from '../../store/habitsSlice';
 import { logout } from '../../store/authSlice';
+import { useModal } from '../../context/ModalContext';
+import { getCustomErrorMessage } from '../../utils/errorMessages';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
@@ -14,6 +15,7 @@ export const useHomeScreen = () => {
   const navigation = useNavigation<HomeScreenNavigationProp>();
   const { habitsList, error } = useAppSelector((state) => state.habits);
   const { isLoggedIn } = useAppSelector((state) => state.auth);
+  const { showConfirm } = useModal();
 
   // Effects
   useEffect(() => {
@@ -52,13 +54,11 @@ export const useHomeScreen = () => {
   };
 
   const confirmLogout = () => {
-    Alert.alert(
+    showConfirm(
       'Cerrar sesión',
       '¿Seguro que quieres cerrar sesión?',
-      [
-        { text: 'Cancelar', style: 'cancel' },
-        { text: 'Cerrar sesión', onPress: handleLogout, style: 'destructive' }
-      ]
+      handleLogout,
+      () => {} // No hacer nada si cancela
     );
   };
 

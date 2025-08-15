@@ -10,11 +10,10 @@ const LoginScreen = () => {
     email,
     password,
     loading,
-    error,
-    handleLogin,
-    handleGoToSignUp,
     handleEmailChange,
     handlePasswordChange,
+    handleLogin,
+    handleGoToSignUp,
   } = useLoginScreen();
 
   return (
@@ -30,7 +29,6 @@ const LoginScreen = () => {
             email={email}
             password={password}
             loading={loading}
-            error={error}
             onEmailChange={handleEmailChange}
             onPasswordChange={handlePasswordChange}
             onLogin={handleLogin}

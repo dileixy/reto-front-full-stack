@@ -8,7 +8,7 @@ export const COLORS = {
     black: '#000000',
     gray: '#B0B0B0',
     green: 'green',
-    red: 'red',
+    red: '#f9502eff',
     shadow: '#999898',
     disabled: '#5d9278',
     placeHolder: '#999'

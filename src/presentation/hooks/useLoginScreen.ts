@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
-import { Alert } from 'react-native';
 import { useSelector } from 'react-redux';
 import { useNavigation } from '@react-navigation/native';
 import { login } from '../../store/authSlice';
 import { RootState } from '../../store/store';
 import { useAppDispatch } from '../../store/hooks';
+import { useModal } from '../../context/ModalContext';
+import { getCustomErrorMessage } from '../../utils/errorMessages';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../navigation/AppNavigator';
 
@@ -14,6 +15,7 @@ export const useLoginScreen = () => {
   const dispatch = useAppDispatch();
   const navigation = useNavigation<LoginScreenNavigationProp>();
   const { loading, error, isLoggedIn } = useSelector((state: RootState) => state.auth);
+  const { showError } = useModal();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -25,21 +27,29 @@ export const useLoginScreen = () => {
     }
   }, [isLoggedIn, navigation]);
 
+  // Show modal for authentication errors
+  useEffect(() => {
+    if (error) {
+      const customMessage = getCustomErrorMessage(error);
+      showError(customMessage);
+    }
+  }, [error]); // Solo depender del error, no de showError
+
   // Validation
   const validateForm = (): boolean => {
     if (!email || !password) {
-      Alert.alert('Error', 'Por favor, ingresa tu email y contraseña.');
+      showError('Por favor, ingresa tu email y contraseña.');
       return false;
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
-      Alert.alert('Error', 'Por favor, ingresa un email válido.');
+      showError('Por favor, ingresa un email válido.');
       return false;
     }
 
     if (password.length < 6) {
-      Alert.alert('Error', 'La contraseña debe tener al menos 6 caracteres.');
+      showError('La contraseña debe tener al menos 6 caracteres.');
       return false;
     }
 
@@ -69,7 +79,6 @@ export const useLoginScreen = () => {
     email,
     password,
     loading,
-    error,
     
     // Handlers
     handleLogin,
