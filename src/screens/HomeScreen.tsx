@@ -1,17 +1,15 @@
 import React, { useEffect } from 'react';
-import { View, Text, FlatList, BackHandler, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, FlatList, Alert } from 'react-native';
 import { useAppSelector, useAppDispatch } from '../store/hooks';
-import { globalStyles } from '../styles/globalStyles';
 import HabitCard from '../components/molecules/HabitCard';
 import { deleteHabit, fetchHabits, toggleHabitCompletion } from '../store/habitsSlice';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
-import { COLORS } from '../styles/colors';
-import Button from '../components/atoms/Button/Button';
+import { FloatingActionButton } from '../components/atoms/Button/Button';
+import UserButton from '../components/atoms/UserButton/UserButton';
 import { logout } from '../store/authSlice';
-import { SPACING } from '../styles/spacing';
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import { homeScreenStyles } from '../styles';
 
 type HomeScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Home'>;
 
@@ -72,30 +70,41 @@ const HomeScreen = () => {
   };
 
   if (error) {
-    return <Text style={{ color: COLORS.red }}>{error}</Text>;
+    return <Text style={homeScreenStyles.errorText}>{error}</Text>;
   }
 
   return (
-    <View style={globalStyles.container}>
-
-      <View style={{ alignItems: 'flex-end', marginBottom: 10, marginTop: 50 }}>
-        <Button title="Cerrar sesión" onPress={handleLogout} />
+    <View style={homeScreenStyles.container}>
+      {/* Header con botón de usuario en la esquina superior izquierda */}
+      <View style={homeScreenStyles.header}>
+        <UserButton onPress={confirmLogout} />
       </View>
-      <Text style={globalStyles.title}>Mis Hábitos</Text>
-      <Button title="Crear Hábito" onPress={handleGoToCreateHabit} />
-      <FlatList
-        data={habitsList}
-        keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <HabitCard
-            habit={item}
-            onComplete={handleCompleteHabit}
-            onEdit={handleEditHabit}
-            onDelete={handleDeleteHabit}
-          />
-        )}
-        contentContainerStyle={{ paddingHorizontal: SPACING.small }}
-      />
+
+      {/* Título centrado */}
+      <View style={homeScreenStyles.titleContainer}>
+        <Text style={homeScreenStyles.title}>Mis Hábitos</Text>
+      </View>
+
+      {/* Botón circular de crear hábito - ahora posicionado absolutamente */}
+      <FloatingActionButton onPress={handleGoToCreateHabit} />
+
+      {/* Lista de hábitos */}
+      <View style={homeScreenStyles.listContainer}>
+        <FlatList
+          data={habitsList}
+          keyExtractor={(item) => item.id.toString()}
+          renderItem={({ item }) => (
+            <HabitCard
+              habit={item}
+              onComplete={handleCompleteHabit}
+              onEdit={handleEditHabit}
+              onDelete={handleDeleteHabit}
+            />
+          )}
+          contentContainerStyle={homeScreenStyles.listContentContainer}
+          showsVerticalScrollIndicator={false}
+        />
+      </View>
     </View>
   );
 };

@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 import { COLORS } from './colors';
 import { SPACING } from './spacing';
-import { TYPOGRAPHY } from './typography';
+import { TYPOGRAPHY, textStyles } from './typography';
 
 export const globalStyles = StyleSheet.create({
   container: {
@@ -13,12 +13,12 @@ export const globalStyles = StyleSheet.create({
     overflow: 'visible',
   },
   title: {
-    ...TYPOGRAPHY.title,
+    ...textStyles.title,
     textAlign: 'center',
     marginBottom: SPACING.medium,
   },
   subtitle: {
-    ...TYPOGRAPHY.subtitle,
+    ...textStyles.subtitle,
     textAlign: 'center',
     color: '#666',
     marginBottom: SPACING.small,

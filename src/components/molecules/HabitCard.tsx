@@ -1,9 +1,8 @@
 import React from 'react';
 import { View, Text, TouchableOpacity } from 'react-native';
 import { Habit } from '../../types/index';
-import { habitCardStyles } from '../../styles/habitCard';
+import { habitCardStyles, COLORS } from '../../styles';
 import { CheckCircle, Edit2, Trash2 } from 'lucide-react-native';
-import { COLORS } from '../../styles/colors';
 
 interface HabitCardProps {
   habit: Habit;
